@@ -25,10 +25,6 @@ func modifyList[T [3]int | []int](a T) {
 	a[0] = 100
 }
 
-func modifySlice(a []int) {
-	a[0] = 100
-}
-
 func modifyMap(m map[string]string, p *map[string]string) {
 	m["A"] = "Modified"
 }
