@@ -1,8 +1,10 @@
 /*
 	This is a test experiment for function args.
 	In golang, function will copy a new variable for args, and it calls by value.
-	Modification of index / key will not affect the variable we input. (They are totally distinct.)
-	If we want to modify the map / slice / struct we input, we may need to use pointer to point to the Heap memory.
+	Modification of will not affect the variable we input. (They are totally distinct.)
+
+	If we want to modify the struct in input parameters by reference,
+	we have to use pointer to point to the address in Heap memory.
 */
 
 package main
@@ -23,11 +25,19 @@ func modifyList[T [3]int | []int](a T) {
 	a[0] = 100
 }
 
+func modifySlice(a []int) {
+	a[0] = 100
+}
+
 func modifyMap(m map[string]string, p *map[string]string) {
 	m["A"] = "Modified"
 }
 
 func modifyStruct(o Object) {
+	o.key = "Modified"
+}
+
+func modifyStructPointer(o *Object) {
 	o.key = "Modified"
 }
 
@@ -44,9 +54,13 @@ func main() {
 	fmt.Printf("Array value after modify: %v\n", testArray) //[1, 2, 3] (no change)
 
 	// Slice
+	/*
+		In fact slice is made by a struct, which store { pointer, len, cap }
+		As a result, when sending slice into func, we use struct pointer to modify value.
+	*/
 	var testSlice = []int{1, 2, 3}
 	modifyList(testSlice)
-	fmt.Printf("Slice value after modify: %v\n", testArray) //[1, 2, 3] (no change)
+	fmt.Printf("Slice value after modify: %v\n", testSlice) //[100, 2, 3] (changed)
 
 	// Map
 	testMap := map[string]string{
@@ -54,6 +68,7 @@ func main() {
 		"B": "world",
 		"C": "!!",
 	}
+
 	modifyMap(testMap, &testMap)
 	fmt.Printf("Map value after modify: %v\n", testMap) // map[A:Modified B:world C:!!]  (changed)
 	
@@ -64,4 +79,7 @@ func main() {
 
 	modifyStruct(object)
 	fmt.Printf("Struct value after modify: %v\n", object) // {Hello world} (no change)
+
+	modifyStructPointer(&object)
+	fmt.Printf("Struct value after modify: %v\n", object) // {Modified} (changed)
 }
