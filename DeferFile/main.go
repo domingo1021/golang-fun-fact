@@ -1,17 +1,17 @@
 package main
 /*
 	Objective: 
-		make a experiment to help me keep using defer as usual in sussesive file operation circustums.
+		make an experiment to help me keep using defer as usual in sussesive file operation circumstance.
 
 	Explanation: 
-		To use "defer" to deal with os.File.Close in sussesive file operation circustums,
+		To use "defer" to deal with os.File.Close in sussesive file operation circumstance,
 		I make use of some characteristic in os.File.Open and defer to make a util function 
 	
 			- os.File.Open (fileName string) (*File, error)
 				Because open file function return the pointer type of File,
 				we can use the pointer to close the exact File with the address in Heap memory.
 			
-			- defer will be execute in the order of "Last in first out".
+			- defer will be executed in the order of "Last in first out".
 
 			- defer + func()
 				When defer function is first invoke (not execute yet),
