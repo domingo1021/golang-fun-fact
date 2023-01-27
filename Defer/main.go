@@ -122,7 +122,7 @@ func test4() (x int) {
 
 /*
 	function & parameter 
-	defer:  0, 9
+	defer:  50, 90
 	main: 100, 9
 */
 func test5() (n int, x int) {
